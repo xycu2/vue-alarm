@@ -1,0 +1,885 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ========== CSS переменные для тем ========== */
+:root {
+    --bg-primary: linear-gradient(145deg, #1e2a3a 0%, #0f1724 100%);
+    --bg-card: rgba(255, 255, 255, 0.08);
+    --bg-card-inner: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.2);
+    --shadow-card: 0 25px 45px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --shadow-inner: 0 8px 20px rgba(0, 0, 0, 0.2);
+    --btn-primary: linear-gradient(135deg, #667eea, #764ba2);
+    --btn-secondary: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --modal-bg: rgba(0, 0, 0, 0.85);
+    --option-bg: rgba(255, 255, 255, 0.1);
+    --option-hover: rgba(255, 255, 255, 0.2);
+    --ringing-bg: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    --mission-bg: rgba(30, 42, 58, 0.95);
+}
+
+/* Светлая тема */
+body.light-theme {
+    --bg-primary: linear-gradient(145deg, #e2e8f0 0%, #cbd5e1 100%);
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-inner: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+    --text-primary: #0f172a;
+    --text-secondary: rgba(15, 23, 42, 0.85);
+    --text-muted: rgba(15, 23, 42, 0.6);
+    --border-color: rgba(0, 0, 0, 0.12);
+    --shadow-card: 0 25px 45px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --shadow-inner: 0 8px 20px rgba(0, 0, 0, 0.08);
+    --btn-secondary: rgba(0, 0, 0, 0.06);
+    --input-bg: rgba(0, 0, 0, 0.04);
+    --modal-bg: rgba(255, 255, 255, 0.92);
+    --option-bg: rgba(0, 0, 0, 0.06);
+    --option-hover: rgba(0, 0, 0, 0.12);
+    --mission-bg: rgba(248, 250, 252, 0.97);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.app-container {
+    max-width: 480px;
+    width: 100%;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: 48px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Status Bar */
+.status-bar {
+    display: none;
+    justify-content: space-between;
+    padding: 20px 24px 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+/* Clock Card */
+.clock-card {
+    background: var(--bg-card-inner);
+    backdrop-filter: blur(10px);
+    margin: 20px;
+    padding: 24px;
+    border-radius: 36px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-inner);
+    transition: all 0.3s ease;
+}
+
+.current-time {
+    font-size: 72px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #e0e7ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 6px;
+    font-feature-settings: "tnum";
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.current-date {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.greeting {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--btn-secondary);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: var(--shadow-inner);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    background: var(--option-hover);
+}
+
+.app-container {
+    position: relative;
+}
+
+/* Alarms Header */
+.alarms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 24px 16px;
+}
+
+.alarms-header h2 {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.alarms-count {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Alarms List */
+.alarms-list {
+    margin: 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.alarms-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.alarms-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.alarms-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.alarm-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.alarm-item:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.alarm-item-info {
+    flex: 1;
+}
+
+.alarm-item-time {
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+}
+
+.alarm-item-mission {
+    font-size: 12px;
+    color: #ffb347;
+    margin-top: 4px;
+}
+
+.alarm-item-weekdays {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 6px;
+}
+
+.alarm-item-weekdays span {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-right: 4px;
+    font-size: 9px;
+}
+
+.alarm-item-toggle {
+    width: 52px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 32px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.alarm-item-toggle.active {
+    background: #ffb347;
+}
+
+.toggle-slider-small {
+    width: 28px;
+    height: 28px;
+    background: white;
+    border-radius: 28px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.alarm-item-toggle.active .toggle-slider-small {
+    transform: translateX(20px);
+}
+
+.empty-alarms {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 28px;
+    font-size: 14px;
+}
+
+/* FAB Button */
+.fab {
+    width: calc(100% - 40px);
+    margin: 0 20px 20px;
+    padding: 14px;
+    background: linear-gradient(135deg, #ffb347, #ff8c00);
+    border: none;
+    border-radius: 60px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
+}
+
+.fab:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
+}
+
+/* Missions Section */
+.missions-section {
+    padding: 0 20px 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+}
+
+.badge {
+    background: rgba(255, 180, 71, 0.2);
+    color: #ffb347;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.missions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mission-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mission-card:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.mission-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.math-icon { background: rgba(255, 100, 100, 0.2); }
+.shake-icon { background: rgba(100, 150, 255, 0.2); }
+.memory-icon { background: rgba(255, 100, 200, 0.2); }
+.steps-icon { background: rgba(100, 255, 150, 0.2); }
+
+.mission-info {
+    flex: 1;
+}
+
+.mission-name {
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.mission-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.mission-difficulty {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.mission-difficulty.hard {
+    background: rgba(220, 53, 69, 0.2);
+    color: #ff6b6b;
+}
+
+.mission-difficulty.medium {
+    background: rgba(253, 126, 20, 0.2);
+    color: #ffb347;
+}
+
+.mission-difficulty.easy {
+    background: rgba(40, 167, 69, 0.2);
+    color: #6fcf97;
+}
+
+/* Mission Modals */
+.mission-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(20, 20, 30);
+    background: rgba(20, 20, 30, 0.96);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+}
+
+.mission-modal.active {
+    display: flex;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.mission-modal-content {
+    background-color: #1e2332 !important;
+    border-radius: 48px;
+    max-width: 380px;
+    width: 90%;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease-out forwards;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-40px) scale(0.92);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.mission-modal-header {
+    padding: 24px;
+    background: linear-gradient(135deg, #ffb347, #ff8c00);
+    color: white;
+    text-align: center;
+}
+
+.mission-modal-header h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.timer, .shake-counter, .memory-level, .steps-counter {
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.mission-modal-body {
+    padding: 32px 24px;
+    text-align: center;
+}
+
+.math-question {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.math-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.math-option {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 28px;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.math-option:active {
+    transform: scale(0.95);
+    background: #ffb347;
+}
+
+.shake-animation, .steps-animation {
+    margin: 20px 0;
+}
+
+.phone-icon, .pedometer {
+    font-size: 80px;
+    display: inline-block;
+}
+
+.phone-icon {
+    animation: shakePhone 0.5s infinite;
+}
+
+@keyframes shakePhone {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+.pedometer {
+    animation: walk 0.5s ease-in-out infinite;
+}
+
+@keyframes walk {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(15px); }
+}
+
+.shake-progress, .steps-progress {
+    margin: 24px 0;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ffb347, #ff8c00);
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.hint-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    margin: 16px 0;
+}
+
+.math-hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    display: block;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.demo-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.demo-btn:active {
+    transform: scale(0.95);
+}
+
+/* Memory Mission */
+.memory-sequence {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+    min-height: 80px;
+    align-items: center;
+}
+
+.memory-color {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    transition: transform 0.1s;
+}
+
+.memory-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.memory-btn {
+    padding: 14px;
+    border: none;
+    border-radius: 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.memory-btn:active {
+    transform: scale(0.95);
+}
+
+.memory-btn.red { background: #ff6b6b; color: white; }
+.memory-btn.blue { background: #4dabf7; color: white; }
+.memory-btn.green { background: #51cf66; color: white; }
+.memory-btn.yellow { background: #ffd43b; color: #1e1e2a; }
+
+.memory-status {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+/* Ringing Notification */
+.ringing-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    animation: slideDown 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+@keyframes slideDown {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+.ringing-content {
+    background: #ff4757;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 60px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.ringing-icon {
+    font-size: 28px;
+    animation: ring 1s infinite;
+}
+
+@keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+.ringing-text {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 5px 0;
+}
+
+.ringing-subtext {
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .current-time {
+        font-size: 56px;
+    }
+    .alarm-item-time {
+        font-size: 24px;
+    }
+}
+
+/* ========== Светлая тема - переопределение всех цветов ========== */
+body.light-theme {
+    color: var(--text-primary);
+}
+
+body.light-theme .current-time,
+body.light-theme .current-date,
+body.light-theme .greeting,
+body.light-theme .status-bar,
+body.light-theme .alarms-header h2,
+body.light-theme .alarms-count,
+body.light-theme .alarm-item-time,
+body.light-theme .alarm-item-mission,
+body.light-theme .alarm-item-weekdays,
+body.light-theme .empty-alarms,
+body.light-theme .section-header h3,
+body.light-theme .badge,
+body.light-theme .mission-name,
+body.light-theme .mission-desc,
+body.light-theme .fab span,
+body.light-theme .add-alarm-header h1,
+body.light-theme .add-alarm-header p,
+body.light-theme .time-display,
+body.light-theme .time-label,
+body.light-theme .delete-btn,
+body.light-theme .time-input,
+body.light-theme .save-btn,
+body.light-theme .cancel-btn,
+body.light-theme .theme-btn,
+body.light-theme .weekdays-label,
+body.light-theme .weekday-btn,
+body.light-theme .weekday-btn.selected,
+body.light-theme .mission-select-label,
+body.light-theme .mission-option,
+body.light-theme .category-select-label,
+body.light-theme .category-option,
+body.light-theme .sound-select-label,
+body.light-theme .sound-option,
+body.light-theme .sound-select,
+body.light-theme .ringing-content,
+body.light-theme .modal-title,
+body.light-theme .math-question,
+body.light-theme .math-option,
+body.light-theme .memory-status,
+body.light-theme .hint-text,
+body.light-theme .btn-primary,
+body.light-theme .btn-secondary,
+body.light-theme .btn-save,
+body.light-theme .btn-cancel {
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .current-date,
+body.light-theme .greeting,
+body.light-theme .alarm-item-weekdays,
+body.light-theme .mission-desc,
+body.light-theme .empty-alarms,
+body.light-theme .hint-text,
+body.light-theme .memory-status,
+body.light-theme .badge,
+body.light-theme .ringing-subtext {
+    color: var(--text-secondary) !important;
+}
+
+body.light-theme .empty-alarms,
+body.light-theme .alarm-item {
+    background: var(--bg-card);
+}
+
+body.light-theme .weekday-btn {
+    background: var(--btn-secondary);
+    color: var(--text-primary);
+}
+
+body.light-theme .weekday-btn.selected {
+    background: #f97316;
+    color: white;
+}
+
+body.light-theme .alarm-item-toggle {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-theme .alarm-item-toggle.active {
+    background: #f97316 !important;
+}
+
+body.light-theme .toggle-slider-small {
+    background: white !important;
+}
+
+/* Reset Button */
+.reset-section {
+    padding: 20px;
+    text-align: center;
+}
+
+.reset-btn {
+    padding: 10px 20px;
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background: rgba(220, 53, 69, 0.25);
+    color: #dc3545;
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* ========== Светлая тема для модального окна ========== */
+body.light-theme .mission-modal {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+body.light-theme .mission-modal-content {
+    background-color: #f8f9fa !important;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .mission-modal-header {
+    color: #1e2a3a;
+}
+
+body.light-theme .math-question,
+body.light-theme .math-option,
+body.light-theme .timer,
+body.light-theme .shake-counter,
+body.light-theme .memory-level,
+body.light-theme .steps-counter {
+    color: var(--text-primary) !important;
+}
+
+body.light-theme .math-option {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--text-primary);
+}
+
+body.light-theme .math-option:active {
+    background: #f97316;
+    color: white;
+}
+
+body.light-theme .hint-text,
+body.light-theme .memory-status,
+body.light-theme .math-hint {
+    color: var(--text-secondary) !important;
+}
+
+body.light-theme .demo-btn {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--text-primary);
+}
+
+body.light-theme .shake-progress,
+body.light-theme .steps-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .memory-btn.red,
+body.light-theme .memory-btn.blue,
+body.light-theme .memory-btn.green {
+    color: white;
+}
+
+/* Светлая тема для кнопок в add-alarm.html */
+body.light-theme label[for="uploadSoundInput"] {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    color: #1e1e2a !important;
+}
+
+body.light-theme #deleteRingtoneBtn {
+    background: rgba(255, 71, 87, 0.15) !important;
+    border-color: rgba(255, 71, 87, 0.5) !important;
+    color: #ff4757 !important;
+}
+
+body.light-theme #uploadStatus {
+    color: #1e1e2a !important;
+}

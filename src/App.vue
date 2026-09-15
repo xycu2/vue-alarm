@@ -1,12 +1,10 @@
 <template>
-<!-- <HomeView/> -->
-<AddAlarmView/>
+<RouterView/>
 
 </template>
 
 <script setup>
 import HomeView from './views/HomeView.vue';
-import AddAlarmView from './views/AddAlarmView.vue';
 
 </script>
 

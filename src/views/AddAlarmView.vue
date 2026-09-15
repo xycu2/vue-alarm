@@ -2,11 +2,11 @@
   <div class="add-alarm-container">
     <div class="add-alarm-card">
         <div class="add-alarm-header">
-            <button class="back-btn" id="backBtn">
+            <RouterLink to="/" class="back-btn" id="backBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                     <path d="M15 18l-6-6 6-6"/>
                 </svg>
-            </button>
+            </RouterLink>
             <button class="theme-toggle" id="themeToggle" title="Сменить тему">
                 <span id="themeIcon">☀️</span>
             </button>

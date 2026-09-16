@@ -81,10 +81,10 @@
         </div>
         
         <!-- Кнопка Marketplace -->
-        <button class="marketplace-link" onclick="window.location.href='marketplace.html'" style="margin-top: 20px; width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 16px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <RouterLink to="/marketplace" class="marketplace-link" style="margin-top: 20px; width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 16px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
             <span>🛒</span>
             <span>Marketplace - Больше миссий и тем</span>
-        </button>
+        </RouterLink>
 
         <!-- Сброс настроек -->
         <div class="reset-section">

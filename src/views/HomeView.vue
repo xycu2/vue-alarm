@@ -10,8 +10,8 @@
     </div>
 
     <!-- Кнопка смены темы -->
-    <button class="theme-toggle" id="themeToggle" title="Сменить тему">
-        <span id="themeIcon">☀️</span>
+    <button @click="toggleTheme" class="theme-toggle" id="themeToggle" title="Сменить тему">
+        <span id="themeIcon">{{ isLight ? '🌙' : '☀️' }}</span>
     </button>
 
     <!-- Основное время -->
@@ -170,5 +170,8 @@
 </template>
 
 <script setup>
+import { useTheme } from '@/utils/changeTheme';
+
+const { isLight, toggleTheme } = useTheme()
 
 </script>
